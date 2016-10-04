@@ -31,4 +31,4 @@ color =
 }
 
 -- Chamo a cena do menu
-composer.gotoScene("menu")
+composer.gotoScene("quizImagem")
