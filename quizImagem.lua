@@ -34,9 +34,9 @@ local quiz =
 
 local alternativasErradas =
 {
-	a = "Etano",
-	b = "Alcino",
-	c = "Etino"
+	a = "A",
+	b = "B",
+	c = "C"
 }
 
 local background
@@ -49,9 +49,19 @@ local questionImage
 
 local function createBackground(backGroup)
 	-- Crio o background para a cena
-	--background = display.newImageRect(backGroup, "images/backgroundCredits.png", 1024, 768)
-	--background.x = display.contentCenterX
-	--background.y = display.contentCenterY
+	background = display.newImageRect(backGroup, "images/backgroundCredits.png", 1024, 768)
+	background.x = display.contentCenterX
+	background.y = display.contentCenterY
+end
+
+local function quizGoodAlternative(event)
+	composer.setVariable("quizScore", quizScore)
+	composer.gotoScene("game")
+end
+
+local function quizBadAlternative(event)
+	composer.setVariable("quizScore", 0)
+	composer.gotoScene("game")
 end
 
 local function loadQuestion(backGroup)
@@ -85,8 +95,25 @@ local function loadQuestion(backGroup)
 	local altBox3 = display.newRect(questionGroup, boxPositionX, boxPositionY + 2 * boxIncrement, boxWidth, boxHeight)
 	local altBox4 = display.newRect(questionGroup, boxPositionX, boxPositionY + 3 * boxIncrement, boxWidth, boxHeight)
 
-	--Seleciono o ca
+	-- Sorteio a posição para a resposta certa.
+	local resPosition = math.random(0, 3)
 
+	-- Crio os textos com as alternativas
+	local altTextResp = display.newText(questionGroup, quiz.ds_resposta, boxPositionX, boxPositionY + resPosition * boxIncrement, native.systemFont, 44)
+	altTextResp:setFillColor(color.preto.r, color.preto.g, color.preto.b)
+	altTextResp:addEventListener("tap", quizGoodAlternative)
+
+	local altTextErr1 = display.newText(questionGroup, alternativasErradas.a, boxPositionX, boxPositionY + ((resPosition + 1) % 4) * boxIncrement, native.systemFont, 44)
+	altTextErr1:setFillColor(color.preto.r, color.preto.g, color.preto.b)
+	altTextErr1:addEventListener("tap", quizBadAlternative)
+
+	local altTextErr2 = display.newText(questionGroup, alternativasErradas.b, boxPositionX, boxPositionY + ((resPosition + 2) % 4) * boxIncrement, native.systemFont, 44)
+	altTextErr2:setFillColor(color.preto.r, color.preto.g, color.preto.b)
+	altTextErr2:addEventListener("tap", quizBadAlternative)
+
+	local altTextErr3 = display.newText(questionGroup, alternativasErradas.c, boxPositionX, boxPositionY + ((resPosition + 3) % 4) * boxIncrement, native.systemFont, 44)
+	altTextErr3:setFillColor(color.preto.r, color.preto.g, color.preto.b)
+	altTextErr3:addEventListener("tap", quizBadAlternative)
 end
 
 
