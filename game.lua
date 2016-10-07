@@ -6,7 +6,7 @@
 --                Juana Pedreira (juanaspedreira@gmail.com)
 --                Rafaela Ruchinski (rafaelaruchi@gmail.com)
 --  created:      2016-09-25
---  modified:     2016-09-25
+--  modified:     2016-10-07
 --  ----------------------------------------------------------------------------
 
 -- -----------------------------------------------------------------------------
@@ -51,11 +51,17 @@ local lives     =   5 -- Inicio o jogo com 5 vidas
 local munition  =   100 -- inicio o jogo com 100 jatos
 local score     =   0 -- inicio o jogo sem pontos
 
+-- Player
+local player
+
 -- Grupos de objetos
 local backGroup
 local infoGroup
 local gameGroup
 local controlGroup
+
+-- Tabela para carregar as questões
+local questionTable = {}
 
 -- Musica
 
@@ -71,6 +77,30 @@ local function createBackground(backGroup)
   -- Posiciono o background
   background.x = display.contentCenterY
   background.y = display.contentCenterY
+end
+
+local function loadQuestionTable()
+  -- Carrego a biblioteca JSON para decodificao os dados
+  local json = require("json")
+
+  -- Defino o caminho do arquivo de dados
+  local dataPath = system.pathForFile("data/data.json", system.ResourceDirectory)
+
+  -- Carrego o arquivo de dados na variável file (errorString irá indicar se houve erro)
+  local file, errorString = io.open(dataPath, "r")
+
+  -- Carrego os dados na tabela
+  if not file then
+    -- TODO: Jeidsan: Tratar o caso de erro ao carregar arquivo
+  else
+    -- Carrego os dados do arquivo
+    local contents = file:read("*a")
+
+    -- Converto os dados de JSON para o formato de tabela de Lua
+    dataTable = json.decode(contents)
+
+    -- TODO: Jeidsan: Tratar caso em que a tabela não contenha dados
+  end
 end
 
 -- Atualiza os textos de pontuação, munição e vidas
@@ -129,6 +159,10 @@ local function createControl(group)
   local btnClose = display.newImageRect(group, "images/btnClose.png", 40, 40)
   btnClose.x = display.contentCenterX
   btnClose.y = display.contentHeight - 100
+end
+
+local function createPlayer(group)
+  player.type = "player"
 end
 
 -- Cria os objetos que serão bônus

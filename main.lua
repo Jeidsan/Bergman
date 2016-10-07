@@ -6,7 +6,7 @@
 --                Juana Pedreira (juanaspedreira@gmail.com)
 --                Rafaela Ruchinski (rafaelaruchi@gmail.com)
 --  created:      2016-09-24
---  modified:     2016-09-24
+--  modified:     2016-10-07
 --  ----------------------------------------------------------------------------
 
 -- Carrego o Composer para gerenciamento de cenas
@@ -29,32 +29,6 @@ color =
   preto     =   { r = 0/255, g = 0/255, b = 0/255 },
   branco    =   { r = 255/255, g = 255/255, b = 255/255},
 }
---[[local json = require("json")
-
-local dataPath = system.pathForFile("data/data.json", system.ResourceDirectory)
-local file, errorString = io.open(dataPath, "r")
-local dataTable = {}
-
-if not file then
-  print("ERRO: "..errorString)
-else
-  print("OK")
-  local contents = file:read("*a")
-  io.close(file)
-  dataTable = json.decode(contents)
-
-  if dataTable == nill then
-    print("Tabela nula")
-  elseif #dataTable == 0 then
-    print("Tabela vazia")
-  else
-    for i=0, #dataTable do
-      print(#dataTable)
-    end
-  end
-end
---]]
-
 
 -- Chamo a cena do menu
 composer.gotoScene("quizImagem")

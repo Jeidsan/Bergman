@@ -1,3 +1,8 @@
-{
-    "a","b"
-}
+[
+  { "id": 0, "nr_nivel" : 1, "ds_pergunta" : "", "nm_imagem" : "etano.png", "ds_resposta" : "Etano"},
+  { "id": 1, "nr_nivel" : 1, "ds_pergunta" : "", "nm_imagem" : "eteno.png", "ds_resposta" : "Eteno"},
+  { "id": 2, "nr_nivel" : 1, "ds_pergunta" : "", "nm_imagem" : "etino.png", "ds_resposta" : "Etino"},
+  { "id": 3, "nr_nivel" : 1, "ds_pergunta" : "", "nm_imagem" : "etanoA.png", "ds_resposta" : "EtanoA"},
+  { "id": 4, "nr_nivel" : 1, "ds_pergunta" : "", "nm_imagem" : "etenoB.png", "ds_resposta" : "EtenoB"},
+  { "id": 5, "nr_nivel" : 1, "ds_pergunta" : "", "nm_imagem" : "etinoC.png", "ds_resposta" : "EtinoC"},
+]
