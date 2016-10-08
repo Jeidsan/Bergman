@@ -6,7 +6,7 @@
 --                Juana Pedreira (juanaspedreira@gmail.com)
 --                Rafaela Ruchinski (rafaelaruchi@gmail.com)
 --  created:      2016-10-01
---  modified:     2016-10-05
+--  modified:     2016-10-07
 --  ----------------------------------------------------------------------------
 
 -- -----------------------------------------------------------------------------
@@ -23,21 +23,8 @@ local scene = composer.newScene()
 -- Variáveis da cena
 -- -----------------------------------------------------------------------------
 
-local quiz =
-{
-	id = 0,
-	nr_nivel = 1,
-	ds_pergunta = "",
-	nm_imagem = "eteno.png",
-	ds_resposta = "Eteno"
-}
-
-local alternativasErradas =
-{
-	a = "A",
-	b = "B",
-	c = "C"
-}
+local quiz = composer.getVariable("quiz");
+local alternativas = composer.getVariable("alternativas")
 
 local background
 local questionGroup
@@ -55,12 +42,24 @@ local function createBackground(backGroup)
 end
 
 local function quizGoodAlternative(event)
-	composer.setVariable("quizScore", quizScore)
+	-- Se o jogador acertar a pergunta, eu somo 0 pontos ao seu score
+	local score = composer.getVariable("score") + 50
+	composer.setVariable("score", score)
 	composer.gotoScene("game")
 end
 
 local function quizBadAlternative(event)
-	composer.setVariable("quizScore", 0)
+	-- Se o jogador errar a pergunta, ele perde score
+	local energy = composer.getVariable("energy")
+
+	if energy > 1 then
+		energy = energy - 1
+	else
+		energy = 5
+		composer.setVariable("lives", composer.getVariable("lives") - 1)
+	end
+
+	composer.setVariable("energy", energy)
 	composer.gotoScene("game")
 end
 
@@ -103,15 +102,15 @@ local function loadQuestion(backGroup)
 	altTextResp:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 	altTextResp:addEventListener("tap", quizGoodAlternative)
 
-	local altTextErr1 = display.newText(questionGroup, alternativasErradas.a, boxPositionX, boxPositionY + ((resPosition + 1) % 4) * boxIncrement, native.systemFont, 44)
+	local altTextErr1 = display.newText(questionGroup, alternativas[1].ds_resposta, boxPositionX, boxPositionY + ((resPosition + 1) % 4) * boxIncrement, native.systemFont, 44)
 	altTextErr1:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 	altTextErr1:addEventListener("tap", quizBadAlternative)
 
-	local altTextErr2 = display.newText(questionGroup, alternativasErradas.b, boxPositionX, boxPositionY + ((resPosition + 2) % 4) * boxIncrement, native.systemFont, 44)
+	local altTextErr2 = display.newText(questionGroup, alternativas[2].ds_resposta, boxPositionX, boxPositionY + ((resPosition + 2) % 4) * boxIncrement, native.systemFont, 44)
 	altTextErr2:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 	altTextErr2:addEventListener("tap", quizBadAlternative)
 
-	local altTextErr3 = display.newText(questionGroup, alternativasErradas.c, boxPositionX, boxPositionY + ((resPosition + 3) % 4) * boxIncrement, native.systemFont, 44)
+	local altTextErr3 = display.newText(questionGroup, alternativas[3].ds_resposta, boxPositionX, boxPositionY + ((resPosition + 3) % 4) * boxIncrement, native.systemFont, 44)
 	altTextErr3:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 	altTextErr3:addEventListener("tap", quizBadAlternative)
 end
@@ -131,7 +130,6 @@ function scene:create(event)
 
 	-- Carrega a questão e as alternativas
 	loadQuestion(sceneGroup)
-
 end
 
 -- Quando a cena está pronta para ser mostrada (phase will) e quando é mostrada (phase did).
