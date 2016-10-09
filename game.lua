@@ -398,8 +398,19 @@ local function questionCollision(obj1, obj2)
   composer.setVariable("quiz", questionTable[nrQuestion])
   composer.setVariable("alternativas", alts)
 
-  composer.removeScene("quizImagem")
-	composer.gotoScene("quizImagem", { time=1000, effect="crossFade" })
+  --Sorteia o quiz
+  local tipoQuiz = math.random(0, 2)
+
+  if tipoQuiz == 0 then
+    composer.removeScene("quizImagem")
+    composer.gotoScene("quizImagem", { time=1000, effect="crossFade" })
+  elseif tipoQuiz == 1 then
+    composer.removeScene("quizTipo")
+    composer.gotoScene("quizTipo", { time=1000, effect="crossFade" })
+  elseif tipoQuiz == 2 then
+    --composer.removeScene("quizPergunta")
+    --composer.gotoScene("quizPergunta", { time=1000, effect="crossFade" })
+  end
 end
 
 -- Trata da colisão com bonus
