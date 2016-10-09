@@ -39,8 +39,8 @@ local gamer1
 local gamer2
 local gamer3
 local nrGamer = 1
-local sheetInfo = require("imagesheet")
-local imgSheet = graphics.newImageSheet("images/imagesheet.png", sheetInfo:getSheet())
+local sheetInfo = require("spritesheet")
+local imgSheet = graphics.newImageSheet("images/spritesheet.png", sheetInfo:getSheet())
 local imgLives
 local imgScore
 local imgEnergy
@@ -64,10 +64,13 @@ local gamerLoopTimer
 -- Tabela para carregar as questões
 local questionTable = {}
 
+-- Variável para informar se o jogo está pausado.
+local gamePaused = true
+
 -- Musica
 
--- Métodos e escopo principal da cena
 -- -----------------------------------------------------------------------------
+-- Métodos e escopo principal da cena
 -- -----------------------------------------------------------------------------
 
 -- Seto ps parâmetros iniciais
@@ -349,6 +352,9 @@ end
 
 -- Trata da colisão com as questões
 local function questionCollision(obj1, obj2)
+  -- pauso o jogo
+  gamePaused = true;
+
   -- Sorteio uma das questões e asalternativas
   local nrQuestion, alt1, alt2, alt3 = math.random(1, #questionTable), math.random(1, #questionTable), math.random(1, #questionTable), math.random(1, #questionTable)
 
@@ -391,22 +397,23 @@ end
 
 -- Trata a colisão entre objetos
 local function onCollision(event)
-  -- Verifico se é o início da colisão com a phase "began"
-  if ( event.phase == "began" ) then
+  if (not gamePaused) then
+    -- Verifico se é o início da colisão com a phase "began"
+    if ( event.phase == "began" ) then
+      -- Capturo os objetos que colidiram
+      local obj1 = event.object1
+      local obj2 = event.object2
 
-    -- Capturo os objetos que colidiram
-    local obj1 = event.object1
-    local obj2 = event.object2
-
-    -- Testo as colisões que preciso tratar
-    if (obj1.type == "gamer" and obj2.type == "obstacle") or (obj1.type == "obstacle" and obj2.type == "gamer") then
-      obstacleCollision(obj1, obj2)
-    elseif (obj1.type == "gamer" and obj2.type == "question") or (obj1.type == "question" and obj2.type == "gamer") then
-      questionCollision(obj1, obj2)
-    elseif (obj1.type == "gamer" and obj2.type == "bonus") or (obj1.type == "bonus" and obj2.type == "gamer") then
-      bonusCollision(obj1, obj2)
+      -- Testo as colisões que preciso tratar
+      if (obj1.type == "gamer" and obj2.type == "obstacle") or (obj1.type == "obstacle" and obj2.type == "gamer") then
+        obstacleCollision(obj1, obj2)
+      elseif (obj1.type == "gamer" and obj2.type == "question") or (obj1.type == "question" and obj2.type == "gamer") then
+        questionCollision(obj1, obj2)
+      elseif (obj1.type == "gamer" and obj2.type == "bonus") or (obj1.type == "bonus" and obj2.type == "gamer") then
+        bonusCollision(obj1, obj2)
+      end
     end
-   end
+  end
 end
 
 Runtime:addEventListener("collision", onCollision)
@@ -468,6 +475,9 @@ function scene:show(event)
 	if ( phase == "will" ) then
 
 	elseif ( phase == "did" ) then
+    -- Reinicio o jogo
+    gamePaused = false
+
     -- Reinicio o motor de física
     physics.start()
 
@@ -493,6 +503,9 @@ function scene:hide(event)
     timer.cancel(gamerLoopTimer)
 
 	elseif ( phase == "did" ) then
+    -- Pauso o jogo
+    gamePaused = true
+
     -- Removo a detecção de colisões
     Runtime:removeEventListener("colision", onCollision)
 
