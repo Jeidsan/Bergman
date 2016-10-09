@@ -23,25 +23,120 @@ local scene = composer.newScene()
 -- Variáveis da cena
 -- -----------------------------------------------------------------------------
 
-local quiz =
-{
-	id = 0,
-	nr_nivel = 1,
-	ds_pergunta = "",
-	nm_imagem = "",
-	ds_resposta = ""
-}
+local quiz = composer.getVariable("quiz");
+local alternativas = composer.getVariable("alternativas")
 
-local alternativasErradas =
-{
-	a = "",
-	b = "",
-	c = ""
-}
+local background
+local questionGroup
+local alternativeImage1
+local alternativeImage2
+local alternativeImage3
 
 -- -----------------------------------------------------------------------------
 -- Métodos e escopo principal da cena
 -- -----------------------------------------------------------------------------
+local function createBackground(backGroup)
+	-- Crio o background para a cena
+	background = display.newImageRect(backGroup, "images/backgroundCredits.png", 1024, 768)
+	background.x = display.contentCenterX
+	background.y = display.contentCenterY
+end
+local function quizGoodAlternative(event)
+	-- Se o jogador acertar a pergunta, eu somo 0 pontos ao seu score
+	local score = composer.getVariable("score") + 50
+	composer.setVariable("score", score)
+	composer.gotoScene("game")
+end
+
+local function quizBadAlternative(event)
+	-- Se o jogador errar a pergunta, ele perde score
+	local energy = composer.getVariable("energy")
+
+	if energy > 1 then
+		energy = energy - 1
+	else
+		energy = 5
+		composer.setVariable("lives", composer.getVariable("lives") - 1)
+	end
+
+	composer.setVariable("energy", energy)
+	composer.gotoScene("game")
+end
+
+local function loadQuestion(backGroup)
+	-- Crio um grupo para carregar os dados da questão
+	questionGroup = display.newGroup()
+	backGroup:insert(questionGroup)
+
+	-- Guardo o tamanho da tela, para posicionar oc componentes
+	local _HEIGHT = display.contentHeight - 680
+	local _WIDTH = display.contentWidth - 80
+	local _HEIGHT_Image = (display.contentHeight / 2) + 20
+	local _WIDTH_Image = (_WIDTH / 3) - 10
+
+	-- Crio um quadro para servir de fundo à pergunta
+	local questionBackground = display.newRect(questionGroup, (_HEIGHT + 930) / 2, (_HEIGHT + 250) / 2, _WIDTH, _HEIGHT)
+
+	-- Crio a pergunta da questão
+	local questao = display.newText(questionGroup, quiz.ds_pergunta, (_HEIGHT + 930) / 2, (_HEIGHT + 250) / 2, native.systemFont)
+	questao:setFillColor(color.preto.r, color.preto.g, color.preto.b)
+
+	-- Crio quadros para servir de fundo as imagens
+	local alternativeImageBackground1 = display.newRect(questionGroup, (_WIDTH_Image + 75) / 2, (_HEIGHT_Image + 450) / 2, _WIDTH_Image, _HEIGHT_Image)
+	local alternativeImageBackground2 = display.newRect(questionGroup, (_WIDTH_Image + 205), (_HEIGHT_Image + 450) / 2, _WIDTH_Image, _HEIGHT_Image)
+	local alternativeImageBackground3 = display.newRect(questionGroup, (_WIDTH_Image + 525), (_HEIGHT_Image + 450) / 2, _WIDTH_Image, _HEIGHT_Image)
+
+	-- Sorteio a posição para a resposta certa.
+	local resPosition = math.random(0, 2)
+	local widthImg = 0
+
+	-- Ajusta possição da imagem
+	if resPosition == 0 then
+		widthImg = 260
+	elseif resPosition == 1 then
+		widthImg = 130
+	end
+
+	-- Crio as imagens da questão
+	alternativeImage1 = display.newImageRect(questionGroup, "images/" .. quiz.nm_imagem, 300, 300)
+	alternativeImage1.anchorX = 0
+	alternativeImage1.anchorY = 0
+	alternativeImage1.x = alternativeImageBackground1.x + (resPosition *  (alternativeImageBackground1.x)) + 110 - widthImg
+	alternativeImage1.y = 270
+	alternativeImage1:addEventListener("tap", quizGoodAlternative)
+
+ 	-- Ajusta possição da imagem
+	if resPosition == 0 then
+		widthImg = 580
+	elseif resPosition == 2 then
+		widthImg = 1150
+	else
+		widthImg = 0
+	end
+
+	alternativeImage2 = display.newImageRect(questionGroup, "images/" .. alternativas[1].nm_imagem, 300, 300)
+	alternativeImage2.anchorX = 0
+	alternativeImage2.anchorY = 0
+	alternativeImage2.x = alternativeImageBackground2.x - (((resPosition + 1) % 3) * (alternativeImageBackground2.x / 2)) + 685 - widthImg
+	alternativeImage2.y = 270
+	alternativeImage2:addEventListener("tap", quizBadAlternative)
+
+	-- Ajusta possição da imagem
+	if resPosition == 1 then
+		widthImg = 1470
+	elseif resPosition == 2 then
+		widthImg = 735
+	else
+		widthImg = 0
+	end
+
+	alternativeImage3 = display.newImageRect(questionGroup, "images/" .. alternativas[2].nm_imagem, 300, 300)
+	alternativeImage3.anchorX = 0
+	alternativeImage3.anchorY = 0
+	alternativeImage3.x = alternativeImageBackground3.x - (((resPosition + 2) % 3) * (alternativeImageBackground3.x / 2)) + 680 - widthImg
+	alternativeImage3.y = 270
+	alternativeImage3:addEventListener("tap", quizBadAlternative)
+end
 
 -- -----------------------------------------------------------------------------
 -- Eventos da cena
@@ -51,6 +146,12 @@ local alternativasErradas =
 function scene:create(event)
   -- Busco o grupo principal para a cena
 	local sceneGroup = self.view
+
+	-- Crio o background
+	createBackground(sceneGroup)
+
+	-- Carrega a questão e as alternativas
+	loadQuestion(sceneGroup)
 end
 
 -- Quando a cena está pronta para ser mostrada (phase will) e quando é mostrada (phase did).
