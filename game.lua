@@ -167,66 +167,82 @@ local function loadQuestionTable()
   end
 end
 
+local function adjustText(text)
+  local qtyZeros = 8 - #text
+
+  for i=1, qtyZeros do
+    text = "0" .. text
+  end
+
+  return text
+end
+
 -- Atualiza os textos de pontuação, munição e vidas
 local function updateText()
   txtLives.text = composer.getVariable("lives")
   txtEnergy.text = (composer.getVariable("energy") / 5) * 100 .. "%"
-  txtScore.text = composer.getVariable("score")
+  txtScore.text = adjustText(""..composer.getVariable("score"))
 end
 
 -- Cria o painel de informações do jogo
 local function createInfo(infoGroup)
+  -- determino a largura dos textos
+  local textWidth = (display.contentWidth / 3) - 164
+
   -- Crio a imagem para informação das vidas
   imgLives = display.newImageRect(infoGroup, imgSheet, sheetInfo:getFrameIndex("lives"), sheetInfo:getWidth(sheetInfo:getFrameIndex("lives")), sheetInfo:getHeight(sheetInfo:getFrameIndex("lives")))
-  imgLives.x = 64
+  imgLives.x = 100
   imgLives.y = 100
 
   -- Crio o texto para informações sobre a vidas
-  txtLives = display.newText(infoGroup, composer.getVariable("lives") , 128, 100, native.systemFont, 44)
+  txtLives = display.newText(infoGroup, composer.getVariable("lives") , 184, 100, native.systemFont, 44)
   txtLives.anchorX = 0
   txtLives:setFillColor(color.vermelho.r, color.vermelho.g, color.vermelho.b)
 
   -- Crio a imagem para informação da munição
   imgEnergy = display.newImageRect(infoGroup, imgSheet, sheetInfo:getFrameIndex("energy"), sheetInfo:getWidth(sheetInfo:getFrameIndex("energy")), sheetInfo:getHeight(sheetInfo:getFrameIndex("energy")))
-  imgEnergy.x = 400
+  imgEnergy.x = 204 + textWidth
   imgEnergy.y = 100
 
   -- Crio o texto para informações sobre a munições
-  txtEnergy = display.newText(infoGroup, (composer.getVariable("energy") / 5) * 100 .. "%" , 464, 100, native.systemFont, 44)
+  txtEnergy = display.newText(infoGroup, (composer.getVariable("energy") / 5) * 100 .. "%" , 288 + textWidth, 100, native.systemFont, 44)
   txtEnergy.anchorX = 0
   txtEnergy:setFillColor(color.vermelho.r, color.vermelho.g, color.vermelho.b)
 
   -- Crio a imagem para informação dos pontos
   imgScore = display.newImageRect(infoGroup, imgSheet, sheetInfo:getFrameIndex("score"), sheetInfo:getWidth(sheetInfo:getFrameIndex("score")), sheetInfo:getHeight(sheetInfo:getFrameIndex("score")))
-  imgScore.x = 740
+  imgScore.x = 308 + (2 * textWidth)
   imgScore.y = 100
 
   -- Crio o texto para informações sobre a pontos
-  txtScore = display.newText(infoGroup, composer.getVariable("score"), 804, 100, native.systemFont, 44)
+  txtScore = display.newText(infoGroup, composer.getVariable("score"), 392 + (2 * textWidth), 100, native.systemFont, 44)
   txtScore.anchorX = 0
   txtScore:setFillColor(color.vermelho.r, color.vermelho.g, color.vermelho.b)
+end
+
+local function gotoMenu()
+  composer.gotoScene("menu")
 end
 
 -- Cria o grupo de controles
 local function createControl(group)
   -- Cria o botão de pulo
-  local btnUp = display.newImageRect(group, imgSheet, sheetInfo:getFrameIndex("btnUp"), 40, 40)
-  btnUp.x = 64
+  local btnUp = display.newImageRect(group, imgSheet, sheetInfo:getFrameIndex("btnUp"), 64, 64)
+  btnUp.x = 100
   btnUp.y = display.contentHeight - 100
   btnUp:addEventListener("tap", up)
 
   -- Cria o botão de atirar
-  local btnDown = display.newImageRect(group, imgSheet, sheetInfo:getFrameIndex("btnDown"), 40, 40)
-  btnDown.x = display.contentWidth - 64
+  local btnDown = display.newImageRect(group, imgSheet, sheetInfo:getFrameIndex("btnDown"), 64, 64)
+  btnDown.x = display.contentWidth - 100
   btnDown.y = display.contentHeight - 100
   btnDown:addEventListener("tap", down)
 
   -- Cria o botão fechar
-  local btnClose = display.newImageRect(group, imgSheet, sheetInfo:getFrameIndex("btnClose"), 40, 40)
+  local btnClose = display.newImageRect(group, imgSheet, sheetInfo:getFrameIndex("btnClose"), 64, 64)
   btnClose.x = display.contentCenterX
   btnClose.y = display.contentHeight - 100
-  --TODO: Jeidsan: pensar na lógica para o botão fechar. Mostrar a pontuação e encerrar a partida ou só ir ao menu?
-  --btnClose:addEventListener("tap", gotoMenu)
+  btnClose:addEventListener("tap", gotoMenu)
 end
 
 -- Cria os objetos que serão bônus
@@ -483,7 +499,7 @@ function scene:show(event)
     physics.start()
 
     -- Programo o loop do jogo para executar a cada 500ms
-    gameLoopTimer = timer.performWithDelay(1000, gameLoop, 0)
+    gameLoopTimer = timer.performWithDelay(1500, gameLoop, 0)
 
     -- Programo o loop do jogador para executar a cada segundo
     gamerLoopTimer = timer.performWithDelay(100, gamerLoop, 0)

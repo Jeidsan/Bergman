@@ -54,25 +54,25 @@ function scene:create(event)
 	local sceneGroup = self.view
 
   -- Crio o background da cena
-  local background = display.newImageRect(sceneGroup, "images/backgroundMenu.png", 1024, 768)
+  local background = display.newImageRect(sceneGroup, "images/backgroundMenu.png", 1280, 720)
   background.x = display.contentCenterX
   background.y = display.contentCenterY
 
   -- Crio a logo go jogo
-  local logo = display.newText(sceneGroup, "O Alquimista", display.contentCenterX, 175, native.systemFont, 100)
-  logo:setFillColor(color.azul.r, color.azul.g, color.azul.b)
+  local logo = display.newText(sceneGroup, "O Alquimista", (display.contentWidth / 10) * 7 , 175, native.systemFont, 110)
+  logo:setFillColor(color.preto.r, color.preto.g, color.preto.b, 0.85)
 
   -- Crio as opções do menu
-  local btnPlay = display.newText(sceneGroup, "Novo Jogo", display.contentCenterX, 300, native.systemFont, 50)
-  btnPlay:setFillColor(color.amarelo.r, color.amarelo.g, color.amarelo.b)
+  local btnPlay = display.newText(sceneGroup, "Novo Jogo", (display.contentWidth / 10) * 7, 325, native.systemFont, 60)
+  btnPlay:setFillColor(color.preto.r, color.preto.g, color.preto.b, 0.85)
   btnPlay:addEventListener("tap", gotoGame)
 
-  local btnHighScores = display.newText(sceneGroup, "Recordes", display.contentCenterX, 375, native.systemFont, 50)
-  btnHighScores:setFillColor(color.verde.r, color.verde.g, color.verde.b)
+  local btnHighScores = display.newText(sceneGroup, "Recordes", (display.contentWidth / 10) * 7, 425, native.systemFont, 60)
+  btnHighScores:setFillColor(color.preto.r, color.preto.g, color.preto.b, 0.85)
   btnHighScores:addEventListener("tap", gotoHighScores)
 
-  local btnCredits = display.newText(sceneGroup, "Créditos", display.contentCenterX, 450, native.systemFont, 50)
-  btnCredits:setFillColor(color.rosa.r, color.rosa.g, color.rosa.b)
+  local btnCredits = display.newText(sceneGroup, "Créditos", (display.contentWidth / 10) * 7, 525, native.systemFont, 60)
+  btnCredits:setFillColor(color.preto.r, color.preto.g, color.preto.b, 0.85)
   btnCredits:addEventListener("tap", gotoCredits)
 
 end
