@@ -45,6 +45,7 @@ local imgLives
 local imgScore
 local imgEnergy
 
+
 -- Textos
 local txtLives
 local txtScore
