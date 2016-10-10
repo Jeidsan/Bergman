@@ -37,7 +37,7 @@ local alternativeImage3
 -- -----------------------------------------------------------------------------
 local function createBackground(backGroup)
 	-- Crio o background para a cena
-	background = display.newImageRect(backGroup, "images/backgroundCredits.png", 1024, 768)
+	background = display.newImageRect(backGroup, "images/backgroundCredits.jpg", display.contentWidth, display.contentHeight)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 end
@@ -69,22 +69,22 @@ local function loadQuestion(backGroup)
 	backGroup:insert(questionGroup)
 
 	-- Guardo o tamanho da tela, para posicionar oc componentes
-	local _HEIGHT = display.contentHeight - 680
+	local _HEIGHT = display.contentHeight - 630
 	local _WIDTH = display.contentWidth - 80
-	local _HEIGHT_Image = (display.contentHeight / 2) + 20
+	local _HEIGHT_Image = (display.contentHeight / 2) + 180
 	local _WIDTH_Image = (_WIDTH / 3) - 10
 
 	-- Crio um quadro para servir de fundo à pergunta
-	local questionBackground = display.newRect(questionGroup, (_HEIGHT + 930) / 2, (_HEIGHT + 250) / 2, _WIDTH, _HEIGHT)
+	local questionBackground = display.newRect(questionGroup, (_WIDTH / 2) + 35, (_HEIGHT + 100) / 2, _WIDTH, _HEIGHT)
 
 	-- Crio a pergunta da questão
-	local questao = display.newText(questionGroup, quiz.ds_pergunta, (_HEIGHT + 930) / 2, (_HEIGHT + 250) / 2, native.systemFont)
+	local questao = display.newText(questionGroup, quiz.ds_pergunta, (_WIDTH / 2) + 35, (_HEIGHT + 100) / 2, native.systemFont)
 	questao:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 
 	-- Crio quadros para servir de fundo as imagens
-	local alternativeImageBackground1 = display.newRect(questionGroup, (_WIDTH_Image + 75) / 2, (_HEIGHT_Image + 450) / 2, _WIDTH_Image, _HEIGHT_Image)
-	local alternativeImageBackground2 = display.newRect(questionGroup, (_WIDTH_Image + 205), (_HEIGHT_Image + 450) / 2, _WIDTH_Image, _HEIGHT_Image)
-	local alternativeImageBackground3 = display.newRect(questionGroup, (_WIDTH_Image + 525), (_HEIGHT_Image + 450) / 2, _WIDTH_Image, _HEIGHT_Image)
+	local alternativeImageBackground1 = display.newRect(questionGroup, (_WIDTH_Image + 75) / 2, (_HEIGHT_Image + 320) / 2, _WIDTH_Image, _HEIGHT_Image)
+	local alternativeImageBackground2 = display.newRect(questionGroup, (_WIDTH_Image + 245), (_HEIGHT_Image + 320) / 2, _WIDTH_Image, _HEIGHT_Image)
+	local alternativeImageBackground3 = display.newRect(questionGroup, (_WIDTH_Image + 650), (_HEIGHT_Image + 320) / 2, _WIDTH_Image, _HEIGHT_Image)
 
 	-- Sorteio a posição para a resposta certa.
 	local resPosition = math.random(0, 2)
@@ -92,49 +92,49 @@ local function loadQuestion(backGroup)
 
 	-- Ajusta possição da imagem
 	if resPosition == 0 then
-		widthImg = 260
+		widthImg = 340
 	elseif resPosition == 1 then
-		widthImg = 130
+		widthImg = 170
 	end
 
 	-- Crio as imagens da questão
-	alternativeImage1 = display.newImageRect(questionGroup, "images/" .. quiz.nm_imagem, 300, 300)
+	alternativeImage1 = display.newImageRect(questionGroup, "images/" .. quiz.nm_imagem, 350, 350)
 	alternativeImage1.anchorX = 0
 	alternativeImage1.anchorY = 0
-	alternativeImage1.x = alternativeImageBackground1.x + (resPosition *  (alternativeImageBackground1.x)) + 110 - widthImg
-	alternativeImage1.y = 270
+	alternativeImage1.x = alternativeImageBackground1.x + (resPosition *  (alternativeImageBackground1.x)) + 165 - widthImg
+	alternativeImage1.y = 255
 	alternativeImage1:addEventListener("tap", quizGoodAlternative)
 
  	-- Ajusta possição da imagem
 	if resPosition == 0 then
-		widthImg = 580
+		widthImg = 720
 	elseif resPosition == 2 then
-		widthImg = 1150
+		widthImg = 1440
 	else
 		widthImg = 0
 	end
 
-	alternativeImage2 = display.newImageRect(questionGroup, "images/" .. alternativas[1].nm_imagem, 300, 300)
+	alternativeImage2 = display.newImageRect(questionGroup, "images/" .. alternativas[1].nm_imagem, 350, 350)
 	alternativeImage2.anchorX = 0
 	alternativeImage2.anchorY = 0
-	alternativeImage2.x = alternativeImageBackground2.x - (((resPosition + 1) % 3) * (alternativeImageBackground2.x / 2)) + 685 - widthImg
-	alternativeImage2.y = 270
+	alternativeImage2.x = alternativeImageBackground2.x - (((resPosition + 1) % 3) * (alternativeImageBackground2.x / 2)) + 860 - widthImg
+	alternativeImage2.y = 255
 	alternativeImage2:addEventListener("tap", quizBadAlternative)
 
 	-- Ajusta possição da imagem
 	if resPosition == 1 then
-		widthImg = 1470
+		widthImg = 1850
 	elseif resPosition == 2 then
-		widthImg = 735
+		widthImg = 925
 	else
 		widthImg = 0
 	end
 
-	alternativeImage3 = display.newImageRect(questionGroup, "images/" .. alternativas[2].nm_imagem, 300, 300)
+	alternativeImage3 = display.newImageRect(questionGroup, "images/" .. alternativas[2].nm_imagem, 350, 350)
 	alternativeImage3.anchorX = 0
 	alternativeImage3.anchorY = 0
-	alternativeImage3.x = alternativeImageBackground3.x - (((resPosition + 2) % 3) * (alternativeImageBackground3.x / 2)) + 680 - widthImg
-	alternativeImage3.y = 270
+	alternativeImage3.x = alternativeImageBackground3.x - (((resPosition + 2) % 3) * (alternativeImageBackground3.x / 2)) + 860 - widthImg
+	alternativeImage3.y = 255
 	alternativeImage3:addEventListener("tap", quizBadAlternative)
 end
 
