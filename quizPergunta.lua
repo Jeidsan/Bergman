@@ -6,7 +6,7 @@
 --                Juana Pedreira (juanaspedreira@gmail.com)
 --                Rafaela Ruchinski (rafaelaruchi@gmail.com)
 --  created:      2016-10-01
---  modified:     2016-10-01
+--  modified:     2016-10-10
 --  ----------------------------------------------------------------------------
 
 -- -----------------------------------------------------------------------------
@@ -22,9 +22,6 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------
 -- Variáveis da cena
 -- -----------------------------------------------------------------------------
-
-local quiz = composer.getVariable("quiz");
-local alternativas = composer.getVariable("alternativas")
 
 local quiz = composer.getVariable("quiz");
 local alternativas = composer.getVariable("alternativas")
