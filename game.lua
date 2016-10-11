@@ -6,7 +6,7 @@
 --                Juana Pedreira (juanaspedreira@gmail.com)
 --                Rafaela Ruchinski (rafaelaruchi@gmail.com)
 --  created:      2016-09-25
---  modified:     2016-10-08
+--  modified:     2016-10-10
 --  ----------------------------------------------------------------------------
 
 -- -----------------------------------------------------------------------------
@@ -44,7 +44,6 @@ local imgSheet = graphics.newImageSheet("images/spritesheet.png", sheetInfo:getS
 local imgLives
 local imgScore
 local imgEnergy
-
 
 -- Textos
 local txtLives
@@ -109,6 +108,7 @@ end
 
 -- Cria o jogador e trata a sua movimentação
 local function createGamer(group)
+
   -- Crio o grupo para o jogador
   gamer1 = display.newImageRect(group, imgSheet, sheetInfo:getFrameIndex("gamer0"), 150, 150)
   gamer1.x = 150
@@ -394,22 +394,26 @@ local function questionCollision(obj1, obj2)
     },
   }
 
+  local quiz = questionTable[nrQuestion]
+
   -- Carrego a questão na variável com composer
-  composer.setVariable("quiz", questionTable[nrQuestion])
+  composer.setVariable("quiz", quiz)
   composer.setVariable("alternativas", alts)
 
-  --Sorteia o quiz
-  local tipoQuiz = math.random(0, 2)
+  if quiz.nr_tipo = 1 then
+    --Sorteia o quiz
+    local tipoQuiz = math.random(0, 1)
 
-  if tipoQuiz == 0 then
-    composer.removeScene("quizImagem")
-    composer.gotoScene("quizImagem", { time=1000, effect="crossFade" })
-  elseif tipoQuiz == 1 then
-    composer.removeScene("quizTipo")
-    composer.gotoScene("quizTipo", { time=1000, effect="crossFade" })
-  elseif tipoQuiz == 2 then
-    --composer.removeScene("quizPergunta")
-    --composer.gotoScene("quizPergunta", { time=1000, effect="crossFade" })
+    if tipoQuiz == 0 then
+      composer.removeScene("quizImagem")
+      composer.gotoScene("quizImagem", { time=1000, effect="crossFade" })
+    else
+      composer.removeScene("quizTipo")
+      composer.gotoScene("quizTipo", { time=1000, effect="crossFade" })
+    end
+  else
+    composer.removeScene("quizPergunta")
+    composer.gotoScene("quizPergunta", { time=1000, effect="crossFade" })
   end
 end
 
@@ -445,6 +449,7 @@ local function onCollision(event)
 end
 
 Runtime:addEventListener("collision", onCollision)
+
 -- -----------------------------------------------------------------------------
 -- Eventos da cena
 -- -----------------------------------------------------------------------------
