@@ -400,7 +400,7 @@ local function questionCollision(obj1, obj2)
   composer.setVariable("quiz", quiz)
   composer.setVariable("alternativas", alts)
 
-  if quiz.nr_tipo = 1 then
+  if quiz.nr_tipo == 1 then
     --Sorteia o quiz
     local tipoQuiz = math.random(0, 1)
 
