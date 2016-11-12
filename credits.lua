@@ -22,6 +22,8 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------
 -- Variáveis da cena
 -- -----------------------------------------------------------------------------
+local sheetInfo = require("spritesheet")
+local imgSheet = graphics.newImageSheet("images/spritesheet.png", sheetInfo:getSheet())
 
 -- -----------------------------------------------------------------------------
 -- Métodos e escopo principal da cena
@@ -42,9 +44,14 @@ function scene:create(event)
 	local sceneGroup = self.view
 
   -- Crio o background da cena
-  local background = display.newImageRect(sceneGroup, "images/backgroundCredits.png", 1024, 768)
+  local background = display.newImageRect(sceneGroup, "images/backgroundCredits.jpg", 1024, 768)
   background.x = display.contentCenterX
   background.y = display.contentCenterY
+
+  local bottom = display.newImageRect(sceneGroup, "images/backgroundWhite.png", 700, 500)
+  bottom.x = display.contentCenterX
+  bottom.y = display.contentCenterY - 50
+  bottom.alpha = 0.8
 
   -- Crio o título
   local logo = display.newText(sceneGroup, "O Alquimista", display.contentCenterX, 175, native.systemFont, 100)
@@ -61,7 +68,7 @@ function scene:create(event)
   txtRafaela:setFillColor(color.rosa.r, color.rosa.g, color.rosa.b)
 
   -- Adiciono um botão para fechar a cena de créditos
-  local btnClose = display.newImageRect(sceneGroup, "images/btnClose.png", 40, 40)
+  local btnClose = display.newImageRect(sceneGroup, imgSheet, sheetInfo:getFrameIndex("btnClose"), 64, 64)
   btnClose.x = display.contentCenterX
   btnClose.y = display.contentHeight - 100
   btnClose:addEventListener("tap", gotoMenu)
