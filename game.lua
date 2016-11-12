@@ -347,7 +347,13 @@ local function gameLoop()
 end
 
 local function gameOver()
-  --TODO: Jeidsan: pensar na lógica do game over
+  --ODO: Jeidsan: pensar na lógica do game over
+
+  -- Manda para a proxima cena a pontuaçao total
+	composer.setVariable("score", txtScore.text)
+
+  --Muda de cena - Fim de Jogo
+  composer.gotoScene("gameover")
 end
 
 -- Trata das colisões com os obstáculos
