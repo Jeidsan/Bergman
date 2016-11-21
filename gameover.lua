@@ -50,13 +50,6 @@ end
 
 -- Cria o grupo de controles
 local function createControl(group)
-
-  -- Cria o botão voltar para o game
-  local btnComeBack = display.newImageRect(group, "images/Voltar.png", 64, 64)
-	btnComeBack.x = 100
-  btnComeBack.y = display.contentHeight - 80
-  btnComeBack:addEventListener("tap", gotoGame)
-
   -- Cria o botão fechar
   local btnClose = display.newImageRect(group, imgSheet, sheetInfo:getFrameIndex("btnClose"), 64, 64)
   btnClose.x = display.contentCenterX
@@ -81,7 +74,7 @@ local function createInfo(infoGroup)
   local textHeight = (display.contentHeight / 2) + 120
 
   -- Crio o texto para informações sobre a pontos
-  txtScores = display.newText(infoGroup, adjustText(""..composer.getVariable("score")), textWidth, textHeight, native.systemFont, 150) 
+  txtScores = display.newText(infoGroup, adjustText(""..composer.getVariable("score")), textWidth, textHeight, native.systemFont, 150)
   txtScores:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 
 end
