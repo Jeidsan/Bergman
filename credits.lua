@@ -44,28 +44,28 @@ function scene:create(event)
 	local sceneGroup = self.view
 
   -- Crio o background da cena
-  local background = display.newImageRect(sceneGroup, "images/backgroundCredits.jpg", 1024, 768)
+  local background = display.newImageRect(sceneGroup, "images/background.png", display.contentWidth, display.contentHeight)
   background.x = display.contentCenterX
   background.y = display.contentCenterY
 
-  local bottom = display.newImageRect(sceneGroup, "images/backgroundWhite.png", 700, 500)
+  local bottom = display.newImageRect(sceneGroup, "images/backgroundWhite.png", 850, 650)
   bottom.x = display.contentCenterX
-  bottom.y = display.contentCenterY - 50
-  bottom.alpha = 0.8
+  bottom.y = display.contentCenterY
+  bottom.alpha = 0.7
 
   -- Crio o título
-  local logo = display.newText(sceneGroup, "O Alquimista", display.contentCenterX, 175, native.systemFont, 100)
-  logo:setFillColor(color.azul.r, color.azul.g, color.azul.b)
+  local logo = display.newText(sceneGroup, "Curie", display.contentCenterX, 175, native.systemFont, 100)
+  logo:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 
   -- Coloco o nome dos autores
   local txtJeidsan = display.newText(sceneGroup, "Jeidsan Pereira", display.contentCenterX, 300, native.systemFont, 50)
-  txtJeidsan:setFillColor(color.vermelho.r, color.vermelho.g, color.vermelho.b)
+  txtJeidsan:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 
   local txtJuana = display.newText(sceneGroup, "Juana Pedreira", display.contentCenterX, 375, native.systemFont, 50)
-  txtJuana:setFillColor(color.verde.r, color.verde.g, color.verde.b)
+  txtJuana:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 
   local txtRafaela = display.newText(sceneGroup, "Rafaela Ruchinski", display.contentCenterX, 450, native.systemFont, 50)
-  txtRafaela:setFillColor(color.rosa.r, color.rosa.g, color.rosa.b)
+  txtRafaela:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 
   -- Adiciono um botão para fechar a cena de créditos
   local btnClose = display.newImageRect(sceneGroup, imgSheet, sheetInfo:getFrameIndex("btnClose"), 64, 64)

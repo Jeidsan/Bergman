@@ -6,7 +6,7 @@
 --                Juana Pedreira (juanaspedreira@gmail.com)
 --                Rafaela Ruchinski (rafaelaruchi@gmail.com)
 --  created:      2016-09-24
---  modified:     2016-09-24
+--  modified:     2016-11-27
 --  ----------------------------------------------------------------------------
 
 -- -----------------------------------------------------------------------------
@@ -35,8 +35,8 @@ end
 
 -- Leva o usuário até a cena de pontuação
 local function gotoHighScores()
-  composer.removeScene("higscores")
-	composer.gotoScene("higscores", { time=1000, effect="crossFade" })
+  composer.removeScene("highscores")
+	composer.gotoScene("highscores", { time=1000, effect="crossFade" })
 end
 
 -- Leva o usuário até a cena de créditos
@@ -59,7 +59,7 @@ function scene:create(event)
   background.y = display.contentCenterY
 
   -- Crio a logo go jogo
-  local logo = display.newText(sceneGroup, "Bergman", (display.contentWidth / 10) * 7 , 175, native.systemFont, 110)
+  local logo = display.newText(sceneGroup, "Curie", (display.contentWidth / 10) * 7 , 175, native.systemFont, 110)
   logo:setFillColor(color.preto.r, color.preto.g, color.preto.b, 0.85)
 
   -- Crio as opções do menu

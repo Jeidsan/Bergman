@@ -1,12 +1,12 @@
 --  ----------------------------------------------------------------------------
 --  projectname:
---  filename:     menu.lua
+--  filename:     highscores.lua
 --  description:  Contém a definição do menu do aplicação
 --  authors:      Jeidsan A. da C. Pereira (jeidsanpereira@gmail.com)
 --                Juana Pedreira (juanaspedreira@gmail.com)
 --                Rafaela Ruchinski (rafaelaruchi@gmail.com)
 --  created:      2016-11-21
---  modified:     2016-11-21
+--  modified:     2016-11-27
 --  ----------------------------------------------------------------------------
 
 -- -----------------------------------------------------------------------------
@@ -24,6 +24,8 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------
 
 local scoreTable = { }
+local sheetInfo = require("spritesheet")
+local imgSheet = graphics.newImageSheet("images/spritesheet.png", sheetInfo:getSheet())
 
 -- -----------------------------------------------------------------------------
 -- Métodos e escopo principal da cena
@@ -53,10 +55,10 @@ function loadScore()
   end
 end
 
-function createBackground()
-{
-	
-}
+-- Leva o usuário até o menu principal
+local function gotoMenu()
+  composer.gotoScene("menu")
+end
 
 -- -----------------------------------------------------------------------------
 -- Eventos da cena
@@ -66,6 +68,30 @@ function createBackground()
 function scene:create(event)
   -- Busco o grupo principal para a cena
 	local sceneGroup = self.view
+
+  -- Crio o background da cena
+  local background = display.newImageRect(sceneGroup, "images/background.png", display.contentWidth, display.contentHeight)
+  background.x = display.contentCenterX
+  background.y = display.contentCenterY
+
+  local bottom = display.newImageRect(sceneGroup, "images/backgroundWhite.png", 850, 650)
+  bottom.x = display.contentCenterX
+  bottom.y = display.contentCenterY
+  bottom.alpha = 0.7
+
+  -- Crio o título
+  local logo = display.newText(sceneGroup, "Recordes", display.contentCenterX, 175, native.systemFont, 100)
+  logo:setFillColor(color.preto.r, color.preto.g, color.preto.b)
+
+  -- Coloco o nome dos autores
+  local txtJeidsan = display.newText(sceneGroup, "3000", display.contentCenterX, 300, native.systemFont, 30)
+  txtJeidsan:setFillColor(color.preto.r, color.preto.g, color.preto.b)
+
+  -- Adiciono um botão para fechar a cena de créditos
+  local btnClose = display.newImageRect(sceneGroup, imgSheet, sheetInfo:getFrameIndex("btnClose"), 64, 64)
+  btnClose.x = display.contentCenterX
+  btnClose.y = display.contentHeight - 100
+  btnClose:addEventListener("tap", gotoMenu)
 end
 
 -- Quando a cena está pronta para ser mostrada (phase will) e quando é mostrada (phase did).
