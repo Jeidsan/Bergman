@@ -78,6 +78,30 @@ local function createInfo(infoGroup)
   txtScores:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 
 end
+
+--Salva a pontuação
+local function saveScores()
+	local scoresTable = { 100, 90, 80, 70, 60, 50, 40, 30, 20, 10 }
+
+	-- Carrego a biblioteca JSON para decodificao os dados
+	local json = require("json")
+	
+	-- Defino o caminho do arquivo de dados
+	local dataPath = system.pathForFile("data/scores.json", system.ResourceDirectory)
+
+
+	for i = #scoresTable, 11, -1 do
+    table.remove( scoresTable, i )
+  end
+
+  local file = io.open( dataPath, "w" )
+
+  if file then
+    file:write(json.encode(scoresTable))
+    io.close(file)
+  end
+end
+
 -- -----------------------------------------------------------------------------
 -- Eventos da cena
 -- -----------------------------------------------------------------------------
@@ -86,6 +110,9 @@ end
 function scene:create(event)
   -- Busco o grupo principal para a cena
   local sceneGroup = self.view
+
+	-- Salva a pontuação
+	saveScores();
 
   -- Crio o background
   createBackground(sceneGroup)

@@ -30,7 +30,7 @@ local imgSheet = graphics.newImageSheet("images/spritesheet.png", sheetInfo:getS
 -- -----------------------------------------------------------------------------
 -- Métodos e escopo principal da cena
 -- -----------------------------------------------------------------------------
-
+-- Função que carrega os dados da tabela
 function loadScore()
 	-- Carrego a biblioteca JSON para decodificao os dados
   local json = require("json")
@@ -51,7 +51,9 @@ function loadScore()
     -- Converto os dados de JSON para o formato de tabela de Lua
     scoreTable = json.decode(contents)
 
-    -- TODO: Jeidsan: Tratar caso em que a tabela não contenha dados
+    if (scoresTable == nil or #scoresTable == 0) then
+        scoresTable = { 100, 90, 80, 70, 60, 50, 40, 30, 20, 10 }
+    end
   end
 end
 
@@ -60,15 +62,7 @@ local function gotoMenu()
   composer.gotoScene("menu")
 end
 
--- -----------------------------------------------------------------------------
--- Eventos da cena
--- -----------------------------------------------------------------------------
-
--- Quando a cena é criada.
-function scene:create(event)
-  -- Busco o grupo principal para a cena
-	local sceneGroup = self.view
-
+local function createBackground(sceneGroup)
   -- Crio o background da cena
   local background = display.newImageRect(sceneGroup, "images/background.png", display.contentWidth, display.contentHeight)
   background.x = display.contentCenterX
@@ -80,18 +74,55 @@ function scene:create(event)
   bottom.alpha = 0.7
 
   -- Crio o título
-  local logo = display.newText(sceneGroup, "Recordes", display.contentCenterX, 175, native.systemFont, 100)
+  local logo = display.newText(sceneGroup, "Recordes", display.contentCenterX, 150, native.systemFont, 80)
+  logo.anchorX = 0.5
+  logo.anchorY = 0.5
   logo:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 
-  -- Coloco o nome dos autores
-  local txtJeidsan = display.newText(sceneGroup, "3000", display.contentCenterX, 300, native.systemFont, 30)
-  txtJeidsan:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 
+  local textHeight = 250;
+
+  --Preencho os pontos na tela
+  for i = 1, 5 do
+    -- Se a posição não estiver nula
+    if (scoresTable[i]) then
+      -- crio um novo texto para inserir
+      local left = display.newText(sceneGroup, scoresTable[i], display.contentCenterX - 200, textHeight, native.systemFont, 60)
+      left:setFillColor(color.preto.r, color.preto.g, color.preto.b)
+      left.anchorX = 0.5
+
+      local right = display.newText(sceneGroup, scoresTable[i + 5], display.contentCenterX + 200, textHeight, native.systemFont, 60)
+      right:setFillColor(color.preto.r, color.preto.g, color.preto.b)
+      right.anchorX = 0.5
+
+      --Incremnento a posição do texto
+      textHeight = textHeight + 75
+    end
+  end
   -- Adiciono um botão para fechar a cena de créditos
   local btnClose = display.newImageRect(sceneGroup, imgSheet, sheetInfo:getFrameIndex("btnClose"), 64, 64)
   btnClose.x = display.contentCenterX
   btnClose.y = display.contentHeight - 100
   btnClose:addEventListener("tap", gotoMenu)
+end
+
+-- -----------------------------------------------------------------------------
+-- Eventos da cena
+-- -----------------------------------------------------------------------------
+
+-- Quando a cena é criada.
+function scene:create(event)
+  -- Busco o grupo principal para a cena
+	local sceneGroup = self.view
+
+  -- Carrego os dados de scores
+  loadScore()
+
+  --
+  createBackground(sceneGroup);
+
+  --
+
 end
 
 -- Quando a cena está pronta para ser mostrada (phase will) e quando é mostrada (phase did).
