@@ -380,7 +380,14 @@ local function questionCollision(obj1, obj2)
   -- Sorteio uma das questões e asalternativas
   local nrQuestion, alt1, alt2, alt3 = math.random(1, #questionTable), math.random(1, #questionTable), math.random(1, #questionTable), math.random(1, #questionTable)
 
-  while (nrQuestion == alt1) or (nrQuestion == alt2) or (nrQuestion == alt3) or (alt1 == alt2) or (alt1 == alt3) or (alt2 == alt3) do
+  while 
+    (nrQuestion == alt1) or
+    (nrQuestion == alt2) or
+    (nrQuestion == alt3) or
+    (alt1 == alt2) or
+    (alt1 == alt3) or
+    (alt2 == alt3)
+  do
     nrQuestion, alt1, alt2, alt3 = math.random(1, #questionTable), math.random(1, #questionTable), math.random(1, #questionTable), math.random(1, #questionTable)
   end
 

@@ -41,6 +41,7 @@ local function createBackground(backGroup)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 end
+
 local function quizGoodAlternative(event)
 	-- Se o jogador acertar a pergunta, eu somo 0 pontos ao seu score
 	local score = composer.getVariable("score") + 50
