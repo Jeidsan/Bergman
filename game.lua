@@ -74,7 +74,7 @@ local gamePaused = true
 -- -----------------------------------------------------------------------------
 
 -- Seto ps parâmetros iniciais
-composer.setVariable("lives", 5)
+composer.setVariable("lives", 1)
 composer.setVariable("score", 0)
 composer.setVariable("energy", 5)
 
@@ -159,6 +159,7 @@ local function loadQuestionTable()
   else
     -- Carrego os dados do arquivo
     local contents = file:read("*a")
+    io.close(file)
 
     -- Converto os dados de JSON para o formato de tabela de Lua
     questionTable = json.decode(contents)
@@ -347,8 +348,6 @@ local function gameLoop()
 end
 
 local function gameOver()
-  --ODO: Jeidsan: pensar na lógica do game over
-
   -- Manda para a proxima cena a pontuaçao total
 	composer.setVariable("score", txtScore.text)
 

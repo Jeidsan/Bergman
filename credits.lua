@@ -54,7 +54,7 @@ function scene:create(event)
   bottom.alpha = 0.7
 
   -- Crio o título
-  local logo = display.newText(sceneGroup, "Curie", display.contentCenterX, 175, native.systemFont, 100)
+  local logo = display.newText(sceneGroup, "Bergman", display.contentCenterX, 175, native.systemFont, 100)
   logo:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 
   -- Coloco o nome dos autores

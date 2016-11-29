@@ -6,7 +6,7 @@
 --                Juana Pedreira (juanaspedreira@gmail.com)
 --                Rafaela Ruchinski (rafaelaruchi@gmail.com)
 --  created:      2016-09-24
---  modified:     2016-09-24
+--  modified:     2016-11-29
 --  ----------------------------------------------------------------------------
 
 -- -----------------------------------------------------------------------------
@@ -22,26 +22,22 @@ local scene = composer.newScene()
 -- -----------------------------------------------------------------------------
 -- Variáveis da cena
 -- -----------------------------------------------------------------------------
+
 -- Textos
 local controlGroup
 local txtScores
 local sheetInfo = require("spritesheet")
 local imgSheet = graphics.newImageSheet("images/spritesheet.png", sheetInfo:getSheet())
+local scoresTable = {}
 
 -- -----------------------------------------------------------------------------
 -- Métodos e escopo principal da cena
 -- -----------------------------------------------------------------------------
-
 local function createBackground(backGroup)
 	-- Crio o background para a cena
 	background = display.newImageRect(backGroup, "images/backgroundGameOver.jpg", display.contentWidth, display.contentHeight)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
-end
-
-local function gotoGame()
-  composer.removeScene("game")
-	composer.gotoScene("game", { time=1000, effect="crossFade" })
 end
 
 local function gotoMenu()
@@ -60,7 +56,7 @@ end
 local function adjustText(text)
   local qtyZeros = 8 - #text
 
-  for i=1, qtyZeros do
+  for i = 1, qtyZeros do
     text = "0" .. text
   end
 
@@ -69,36 +65,70 @@ end
 
 -- Cria o painel de informações do jogo
 local function createInfo(infoGroup)
-  -- determino a largura dos textos
+  -- Determino a largura dos textos
   local textWidth = (display.contentWidth / 2)
   local textHeight = (display.contentHeight / 2) + 120
 
   -- Crio o texto para informações sobre a pontos
   txtScores = display.newText(infoGroup, adjustText(""..composer.getVariable("score")), textWidth, textHeight, native.systemFont, 150)
   txtScores:setFillColor(color.preto.r, color.preto.g, color.preto.b)
+end
 
+local function compare(a,b)
+  return a > b
 end
 
 --Salva a pontuação
-local function saveScores()
-	local scoresTable = { 100, 90, 80, 70, 60, 50, 40, 30, 20, 10 }
-
+local function loadScores()
 	-- Carrego a biblioteca JSON para decodificao os dados
 	local json = require("json")
-	
+
 	-- Defino o caminho do arquivo de dados
 	local dataPath = system.pathForFile("data/scores.json", system.ResourceDirectory)
 
+  -- Carrego o arquivo de dados na variável file (errorString irá indicar se houve erro)
+  local file, errorString = io.open(dataPath, "r")
 
-	for i = #scoresTable, 11, -1 do
-    table.remove( scoresTable, i )
+  -- Carrego os dados na tabela
+  if not file then
+    -- TODO: Jeidsan: Tratar o caso de erro ao carregar arquivo
+  else
+    -- Carrego os dados do arquivo
+  	local contents = file:read("*a")
+  	io.close(file)
+
+  	-- Converto os dados de JSON para o formato de tabela de Lua
+  	scoresTable = json.decode(contents)
+
+  	if (scoresTable == nil or #scoresTable == 0) then
+    	scoresTable = { 100, 90, 80, 70, 60, 50, 40, 30, 20, 10 }
+  	end
   end
+end
 
-  local file = io.open( dataPath, "w" )
+local function saveScores()
+	-- Acrescento a pontuaão da partida atual à tabela
+	table.insert(scoresTable, tonumber(composer.getVariable("score")))
+
+	-- Reorganizo a tabela
+	table.sort(scoresTable, compare)
+
+	-- Apago os registros menores do 11 em diante
+	for i = #scoresTable, 11, -1 do
+	  table.remove( scoresTable, i )
+	end
+
+  -- Carrego a biblioteca JSON para decodificao os dados
+	local json = require("json")
+
+	-- Defino o caminho do arquivo de dados
+	local dataPath = system.pathForFile("data/scores.json", system.ResourceDirectory)
+
+	local file = io.open(dataPath, "w")
 
   if file then
     file:write(json.encode(scoresTable))
-    io.close(file)
+  	io.close(file)
   end
 end
 
@@ -110,9 +140,6 @@ end
 function scene:create(event)
   -- Busco o grupo principal para a cena
   local sceneGroup = self.view
-
-	-- Salva a pontuação
-	saveScores();
 
   -- Crio o background
   createBackground(sceneGroup)
@@ -148,7 +175,9 @@ function scene:hide(event)
 	if ( phase == "will" ) then
 
 	elseif ( phase == "did" ) then
-
+		--Carrega a pontuação e depois salvo-a
+		loadScores()
+		saveScores()
 	end
 end
 

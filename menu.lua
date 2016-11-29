@@ -59,7 +59,7 @@ function scene:create(event)
   background.y = display.contentCenterY
 
   -- Crio a logo go jogo
-  local logo = display.newText(sceneGroup, "Curie", (display.contentWidth / 10) * 7 , 175, native.systemFont, 110)
+  local logo = display.newText(sceneGroup, "Bergman", (display.contentWidth / 10) * 7 , 175, native.systemFont, 110)
   logo:setFillColor(color.preto.r, color.preto.g, color.preto.b, 0.85)
 
   -- Crio as opções do menu

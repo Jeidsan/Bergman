@@ -23,7 +23,7 @@ local scene = composer.newScene()
 -- Variáveis da cena
 -- -----------------------------------------------------------------------------
 
-local scoreTable = { }
+local scoresTable = {}
 local sheetInfo = require("spritesheet")
 local imgSheet = graphics.newImageSheet("images/spritesheet.png", sheetInfo:getSheet())
 
@@ -47,12 +47,13 @@ function loadScore()
   else
     -- Carrego os dados do arquivo
     local contents = file:read("*a")
+    io.close(file)
 
     -- Converto os dados de JSON para o formato de tabela de Lua
-    scoreTable = json.decode(contents)
+    scoresTable = json.decode(contents)
 
     if (scoresTable == nil or #scoresTable == 0) then
-        scoresTable = { 100, 90, 80, 70, 60, 50, 40, 30, 20, 10 }
+      scoresTable = { 100, 90, 80, 70, 60, 50, 40, 30, 20, 10 }
     end
   end
 end
@@ -78,7 +79,6 @@ local function createBackground(sceneGroup)
   logo.anchorX = 0.5
   logo.anchorY = 0.5
   logo:setFillColor(color.preto.r, color.preto.g, color.preto.b)
-
 
   local textHeight = 250;
 
