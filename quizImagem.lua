@@ -36,7 +36,7 @@ local questionImage
 
 local function createBackground(backGroup)
 	-- Crio o background para a cena
-	background = display.newImageRect(backGroup, "images/backgroundCredits.jpg", display.contentWidth, display.contentHeight)
+	background = display.newImageRect(backGroup, "images/background.png", display.contentWidth, display.contentHeight)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 end

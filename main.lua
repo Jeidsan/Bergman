@@ -31,33 +31,33 @@ color =
 }
 
 -- Chamo a cena do menu
---composer.gotoScene("menu")
+composer.gotoScene("menu")
 
-local alts = {
-  {
-    nm_imagem = [[Errada]],
-    ds_resposta = [[Errada]]
-  },
-  {
-    nm_imagem = [[Errada]],
-    ds_resposta = [[Errada]]
-  },
-  {
-    nm_imagem = [[Errada]],
-    ds_resposta = [[Errada]]
-  },
-}
-
-local quiz = {
-  id = 53,
-  nr_tipo = 2,
-  nr_nivel = 1,
-  ds_pergunta = "Intermediário que representa duas dupla ligação ",
-  nm_imagem = nil,
-  ds_resposta = "Dien"
-}
-
-composer.setVariable("quiz", quiz)
-composer.setVariable("alternativas", alts)
-
-composer.gotoScene("quizPergunta")
+--local alts = {
+--  {
+--    nm_imagem = [[Alcanos/2-Metil-Propano.png]],
+--    ds_resposta = [[Errada1]]
+--  },
+--  {
+--    nm_imagem = [[Alcanos/2-Metil-Propano.png]],
+--    ds_resposta = [[Errada2]]
+--  },
+--  {
+--    nm_imagem = [[Alcanos/2-Metil-Propano.png]],
+--    ds_resposta = [[Errada3]]
+--  },
+--}
+--
+--local quiz = {
+--  id = 53,
+--  nr_tipo = 2,
+--  nr_nivel = 1,
+--  ds_pergunta = "Intermediário que representa duas dupla ligação ",
+--  nm_imagem = [[Alcanos/2-Metil-Propano.png]],
+--  ds_resposta = "Dien"
+--}
+--
+--composer.setVariable("quiz", quiz)
+--composer.setVariable("alternativas", alts)
+--
+--composer.gotoScene("quizTipo")

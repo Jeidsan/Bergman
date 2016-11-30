@@ -38,7 +38,7 @@ local alternative4
 -- -----------------------------------------------------------------------------
 local function createBackground(sceneGroup)
 	-- Crio o background da cena
-  background = display.newImageRect(sceneGroup, "images/background.png", 1280, 900)
+  background = display.newImageRect(sceneGroup, "images/background.png", display.contentWidth, display.contentHeight)
   background.x = display.contentCenterX
   background.y = display.contentCenterY
 end
@@ -72,49 +72,84 @@ local function loadQuestion(backGroup)
 
 	-- Guardo o tamanho da tela, para posicionar os componentes
 	local _HEIGHT = (display.contentHeight - 100) / 3
-	local _WIDTH = (display.contentWidth - 100) / 2
+	local _WIDTH = (display.contentWidth - 150) / 2
 
 	-- Crio um quadro para servir de fundo à pergunta
-	local questionBackground = display.newRect(questionGroup, display.contentCenterX, 100, 2 * _WIDTH, _HEIGHT)
+	local questionBackground = display.newRect(questionGroup, 50, 100, 2 * _WIDTH + 50, _HEIGHT)
+  questionBackground.anchorX = 0
+  questionBackground.anchorY = 0.5
+  questionBackground.alpha = 0.8
 
 	-- Crio a pergunta da questão
 	local questao = display.newText(questionGroup, quiz.ds_pergunta, display.contentCenterX, 100, native.systemFont)
+  questao.anchorX = 0.5
+  questao.anchorY = 0.5
 	questao:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 
 	-- Crio quadros para servir de fundo as imagens
-	local alternativeQuestionBackground1 = display.newRect(questionGroup, _WIDTH / 2, 150 + _HEIGHT, _WIDTH, _HEIGHT)
-	--local alternativeQuestionBackground2 = display.newRect(questionGroup, _WIDTH, 150 + _HEIGHT, _WIDTH, _HEIGHT)
+	local alternativeQuestionBackground1 = display.newRect(questionGroup, 50, _HEIGHT + 50, _WIDTH, _HEIGHT)
+  alternativeQuestionBackground1.anchorX = 0
+  alternativeQuestionBackground1.anchorY = 0
+  alternativeQuestionBackground1.alpha = 0.8
 
-	--local alternativeQuestionBackground3 = display.newRect(questionGroup, _WIDTH, (_HEIGHT + 920) / 2, _WIDTH, _HEIGHT)
-	--local alternativeQuestionBackground4 = display.newRect(questionGroup, _WIDTH, (_HEIGHT + 920) / 2, _WIDTH, _HEIGHT)
+	local alternativeQuestionBackground2 = display.newRect(questionGroup, _WIDTH + 100 , _HEIGHT + 50, _WIDTH, _HEIGHT)
+  alternativeQuestionBackground2.anchorX = 0
+  alternativeQuestionBackground2.anchorY = 0
+  alternativeQuestionBackground2.alpha = 0.8
 
-	-- Sorteio a posição para a resposta certa.
-	local resPositionWidth = 0--math.random(0, 2)
-	local resPositionHeigth = 0--math.random(0, 2)
-	local widthImg = 0
+	local alternativeQuestionBackground3 = display.newRect(questionGroup, 50, (2 * _HEIGHT) + 100, _WIDTH, _HEIGHT)
+  alternativeQuestionBackground3.anchorX = 0
+  alternativeQuestionBackground3.anchorY = 0
+  alternativeQuestionBackground3.alpha = 0.8
 
-	-- Crio as alternativas da questão
-	alternative1 = display.newText(questionGroup, quiz.ds_resposta, ((_WIDTH + 75) / 2) + resPositionWidth * (_WIDTH + 20), ((_HEIGHT + 520) / 2) + resPositionHeigth * (_HEIGHT + 40), native.systemFont, 44)
-	alternative1:setFillColor(color.preto.r, color.preto.g, color.preto.b)
-	alternative1:addEventListener("tap", quizGoodAlternative)
+  local alternativeQuestionBackground4 = display.newRect(questionGroup, _WIDTH + 100, (2 * _HEIGHT) + 100, _WIDTH, _HEIGHT)
+  alternativeQuestionBackground4.anchorX = 0
+  alternativeQuestionBackground4.anchorY = 0
+  alternativeQuestionBackground4.alpha = 0.8
 
-	alternative2 = display.newText(questionGroup, alternativas[1].ds_resposta, ((_WIDTH + 75) / 2) + ((resPositionWidth + 1) % 2) * (_WIDTH + 20), ((_HEIGHT + 520) / 2) + ((resPositionHeigth + 1) % 2) * (_HEIGHT + 40), native.systemFont, 44)
+  local option = math.random(1, 4)
+  if option == 1 then
+    alternative1 = display.newText(questionGroup, quiz.ds_resposta, (0.5 * _WIDTH) + 50, (1.5 * _HEIGHT) + 50, native.systemFont, 44)
+    alternative1:addEventListener("tap", quizGoodAlternative)
+    alternative2 = display.newText(questionGroup, alternativas[1].ds_resposta, (1.5 * _WIDTH) + 100, (1.5 * _HEIGHT) + 50, native.systemFont, 44)
+    alternative2:addEventListener("tap", quizBadAlternative)
+    alternative3 = display.newText(questionGroup, alternativas[2].ds_resposta, (0.5 * _WIDTH) + 50, (2.5 * _HEIGHT) + 100, native.systemFont, 44)
+    alternative3:addEventListener("tap", quizBadAlternative)
+    alternative4 = display.newText(questionGroup, alternativas[3].ds_resposta, (1.5 * _WIDTH) + 100, (2.5 * _HEIGHT) + 100, native.systemFont, 44)
+    alternative4:addEventListener("tap", quizBadAlternative)
+  elseif option == 2 then
+    alternative1 = display.newText(questionGroup, alternativas[1].ds_resposta, (0.5 * _WIDTH) + 50, (1.5 * _HEIGHT) + 50, native.systemFont, 44)
+    alternative1:addEventListener("tap", quizBadAlternative)
+    alternative2 = display.newText(questionGroup, quiz.ds_resposta, (1.5 * _WIDTH) + 100, (1.5 * _HEIGHT) + 50, native.systemFont, 44)
+    alternative2:addEventListener("tap", quizGoodAlternative)
+    alternative3 = display.newText(questionGroup, alternativas[2].ds_resposta, (0.5 * _WIDTH) + 50, (2.5 * _HEIGHT) + 100, native.systemFont, 44)
+    alternative3:addEventListener("tap", quizBadAlternative)
+    alternative4 = display.newText(questionGroup, alternativas[3].ds_resposta, (1.5 * _WIDTH) + 100, (2.5 * _HEIGHT) + 100, native.systemFont, 44)
+    alternative4:addEventListener("tap", quizBadAlternative)
+  elseif option == 3 then
+    alternative1 = display.newText(questionGroup, alternativas[1].ds_resposta, (0.5 * _WIDTH) + 50, (1.5 * _HEIGHT) + 50, native.systemFont, 44)
+    alternative1:addEventListener("tap", quizBadAlternative)
+    alternative2 = display.newText(questionGroup, alternativas[2].ds_resposta, (1.5 * _WIDTH) + 100, (1.5 * _HEIGHT) + 50, native.systemFont, 44)
+    alternative2:addEventListener("tap", quizBadAlternative)
+    alternative3 = display.newText(questionGroup, quiz.ds_resposta, (0.5 * _WIDTH) + 50, (2.5 * _HEIGHT) + 100, native.systemFont, 44)
+    alternative3:addEventListener("tap", quizGoodAlternative)
+    alternative4 = display.newText(questionGroup, alternativas[3].ds_resposta, (1.5 * _WIDTH) + 100, (2.5 * _HEIGHT) + 100, native.systemFont, 44)
+    alternative4:addEventListener("tap", quizBadAlternative)
+  else
+    alternative1 = display.newText(questionGroup, alternativas[1].ds_resposta, (0.5 * _WIDTH) + 50, (1.5 * _HEIGHT) + 50, native.systemFont, 44)
+    alternative1:addEventListener("tap", quizBadAlternative)
+    alternative2 = display.newText(questionGroup, alternativas[2].ds_resposta, (1.5 * _WIDTH) + 100, (1.5 * _HEIGHT) + 50, native.systemFont, 44)
+    alternative2:addEventListener("tap", quizBadAlternative)
+    alternative3 = display.newText(questionGroup, alternativas[3].ds_resposta, (0.5 * _WIDTH) + 50, (2.5 * _HEIGHT) + 100, native.systemFont, 44)
+    alternative3:addEventListener("tap", quizBadAlternative)
+    alternative4 = display.newText(questionGroup, quiz.ds_resposta, (1.5 * _WIDTH) + 100, (2.5 * _HEIGHT) + 100, native.systemFont, 44)
+    alternative4:addEventListener("tap", quizGoodAlternative)
+  end
+
+  alternative1:setFillColor(color.preto.r, color.preto.g, color.preto.b)
 	alternative2:setFillColor(color.preto.r, color.preto.g, color.preto.b)
-	alternative2:addEventListener("tap", quizBadAlternative)
-
-	if resPositionWidth == 0 then
-		resPositionWidth = 1
-	else
-		resPositionWidth = 0
-	end
-
-	alternative3 = display.newText(questionGroup, alternativas[2].ds_resposta, ((_WIDTH + 75) / 2) + resPositionWidth * (_WIDTH + 20), ((_HEIGHT + 920) / 2) + resPositionHeigth * (_HEIGHT + 40), native.systemFont, 44)
 	alternative3:setFillColor(color.preto.r, color.preto.g, color.preto.b)
-	alternative3:addEventListener("tap", quizBadAlternative)
-
-	alternative4 = display.newText(questionGroup, alternativas[3].ds_resposta, ((_WIDTH + 75) / 2) + ((resPositionWidth + 1) % 2) * (_WIDTH + 20), ((_HEIGHT + 920) / 2) + ((resPositionHeigth + 1) % 2) * (_HEIGHT + 40), native.systemFont, 44)
 	alternative4:setFillColor(color.preto.r, color.preto.g, color.preto.b)
-	alternative4:addEventListener("tap", quizBadAlternative)
 end
 
 -- -----------------------------------------------------------------------------

@@ -74,7 +74,7 @@ local gamePaused = true
 -- -----------------------------------------------------------------------------
 
 -- Seto ps parâmetros iniciais
-composer.setVariable("lives", 1)
+composer.setVariable("lives", 5)
 composer.setVariable("score", 0)
 composer.setVariable("energy", 5)
 
@@ -374,21 +374,27 @@ end
 
 -- Trata da colisão com as questões
 local function questionCollision(obj1, obj2)
-  -- pauso o jogo
+  -- Pauso o jogo
   gamePaused = true;
 
-  -- Sorteio uma das questões e asalternativas
-  local nrQuestion, alt1, alt2, alt3 = math.random(1, #questionTable), math.random(1, #questionTable), math.random(1, #questionTable), math.random(1, #questionTable)
+  --Sorteio o tipo de quiz que irá aparecer
+  local quizType = math.random(1, 3)
+  local inicio
+  local fim
 
-  while 
-    (nrQuestion == alt1) or
-    (nrQuestion == alt2) or
-    (nrQuestion == alt3) or
-    (alt1 == alt2) or
-    (alt1 == alt3) or
-    (alt2 == alt3)
-  do
-    nrQuestion, alt1, alt2, alt3 = math.random(1, #questionTable), math.random(1, #questionTable), math.random(1, #questionTable), math.random(1, #questionTable)
+  if quizType <= 2 then
+    inicio = 1
+    fim = 26
+  else
+    inicio = 27
+    fim = #questionTable
+  end
+
+  -- Sorteio uma das questões e asalternativas
+  local nrQuestion, alt1, alt2, alt3
+
+  while (nrQuestion == alt1) or (nrQuestion == alt2) or (nrQuestion == alt3) or (alt1 == alt2) or (alt1 == alt3) or (alt2 == alt3) do
+      nrQuestion, alt1, alt2, alt3 = math.random(inicio, fim), math.random(inicio, fim), math.random(inicio, fim), math.random(inicio, fim)
   end
 
   local alts = {
@@ -412,17 +418,12 @@ local function questionCollision(obj1, obj2)
   composer.setVariable("quiz", quiz)
   composer.setVariable("alternativas", alts)
 
-  if quiz.nr_tipo == 1 then
-    --Sorteia o quiz
-    local tipoQuiz = math.random(0, 1)
-
-    if tipoQuiz == 0 then
-      composer.removeScene("quizImagem")
-      composer.gotoScene("quizImagem", { time=1000, effect="crossFade" })
-    else
-      composer.removeScene("quizTipo")
-      composer.gotoScene("quizTipo", { time=1000, effect="crossFade" })
-    end
+  if quizType == 1 then
+    composer.removeScene("quizImagem")
+    composer.gotoScene("quizImagem", { time=1000, effect="crossFade" })
+  elseif quizType == 2 then
+    composer.removeScene("quizTipo")
+    composer.gotoScene("quizTipo", { time=1000, effect="crossFade" })
   else
     composer.removeScene("quizPergunta")
     composer.gotoScene("quizPergunta", { time=1000, effect="crossFade" })
@@ -508,8 +509,6 @@ function scene:create(event)
 
   -- Carrego as questões
   loadQuestionTable()
-
-  print(#questionTable)
 end
 
 -- Quando a cena está pronta para ser mostrada (phase will) e quando é mostrada (phase did).
